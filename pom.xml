@@ -29,6 +29,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>net.sf.biweekly</groupId>
+			<artifactId>biweekly</artifactId>
+			<version>0.6.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
