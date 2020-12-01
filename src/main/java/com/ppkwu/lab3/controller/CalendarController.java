@@ -64,7 +64,7 @@ public class CalendarController {
 
                     VEvent event = new VEvent();
                     event.setSummary(td.selectFirst("div").text());
-                    event.setUrl(a.attr("href"));
+                    event.setDescription(a.attr("href"));
                     Date start = new SimpleDateFormat("yyyy-MM-dd").parse(year + "-" + month + "-" + a.text());
                     event.setDateStart(start);
                     Date end = new SimpleDateFormat("yyyy-MM-dd").parse(year + "-" + month + "-" + a.text());
