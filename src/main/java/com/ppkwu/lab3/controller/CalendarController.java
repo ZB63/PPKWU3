@@ -36,6 +36,8 @@ public class CalendarController {
                 .connect("http://www.weeia.p.lodz.pl/pliki_strony_kontroler/kalendarz.php?rok=" + year + "&miesiac=" + month)
                 .get();
 
+
+
         // event
         VEvent event = new VEvent();
         event.setSummary("Team Meeting");
@@ -45,7 +47,7 @@ public class CalendarController {
         event.setDateEnd(end);
         calendar.addEvent(event);
 
-        File ics = new File("conference.ics");
+        File ics = new File("events" + year + "_" + month + ".ics");
         Biweekly.write(calendar).go(ics);
 
         Path path = Paths.get("conference.ics");
