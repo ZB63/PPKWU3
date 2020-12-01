@@ -33,6 +33,17 @@ public class CalendarController {
         ICalendar calendar = new ICalendar();
         calendar.setExperimentalProperty("X-WR-CALNAME", "Spring Releases");
 
+        if(year.length() != 4 || month.length() != 2) {
+            return ResponseEntity.badRequest().body("Wrong length of parameters!");
+        }
+
+        try {
+            Integer.parseInt(year);
+            Integer.parseInt(month);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Parameters are not integers!");
+        }
+
         // Download data from university website
         Document doc = Jsoup
                 .connect("http://www.weeia.p.lodz.pl/pliki_strony_kontroler/kalendarz.php?rok=" + year + "&miesiac=" + month)
