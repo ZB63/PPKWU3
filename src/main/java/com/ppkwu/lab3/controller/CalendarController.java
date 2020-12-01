@@ -49,23 +49,19 @@ public class CalendarController {
             for(int j=0 ;j<cols.size();j++) {
                 Element td = cols.get(j);
                 if(td.hasClass("active")) {
-                    System.out.println(cols.get(j).text());
                     Element a = td.selectFirst("a");
-                    System.out.println("day: " + a.text());
-                    System.out.println("link/description: " + a.attr("href"));
-                    System.out.println("event name: " + td.selectFirst("div").text());
+
+                    VEvent event = new VEvent();
+                    event.setSummary(td.selectFirst("div").text());
+                    event.setUrl(a.attr("href"));
+                    Date start = new SimpleDateFormat("yyyy-MM-dd").parse(year + "-" + month + "-" + a.text());
+                    event.setDateStart(start);
+                    Date end = new SimpleDateFormat("yyyy-MM-dd").parse(year + "-" + month + "-" + a.text());
+                    event.setDateEnd(end);
+                    calendar.addEvent(event);
                 }
             }
         }
-
-        // event
-        VEvent event = new VEvent();
-        event.setSummary("Team Meeting");
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-18");
-        event.setDateStart(start);
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-18");
-        event.setDateEnd(end);
-        calendar.addEvent(event);
 
         File ics = new File("events" + year + "_" + month + ".ics");
         Biweekly.write(calendar).go(ics);
