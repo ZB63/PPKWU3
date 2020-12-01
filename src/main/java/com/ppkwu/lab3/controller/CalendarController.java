@@ -5,6 +5,8 @@ import biweekly.ICalendar;
 import biweekly.component.VEvent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +38,25 @@ public class CalendarController {
                 .connect("http://www.weeia.p.lodz.pl/pliki_strony_kontroler/kalendarz.php?rok=" + year + "&miesiac=" + month)
                 .get();
 
+        Element table = doc.select("table").get(0);
 
+        Elements rows = table.select("tr");
+
+        for(int i=2;i<rows.size();i++) {
+            Element row = rows.get(i);
+            Elements cols = row.select("td");
+
+            for(int j=0 ;j<cols.size();j++) {
+                Element td = cols.get(j);
+                if(td.hasClass("active")) {
+                    System.out.println(cols.get(j).text());
+                    Element a = td.selectFirst("a");
+                    System.out.println("day: " + a.text());
+                    System.out.println("link/description: " + a.attr("href"));
+                    System.out.println("event name: " + td.selectFirst("div").text());
+                }
+            }
+        }
 
         // event
         VEvent event = new VEvent();
@@ -50,7 +70,7 @@ public class CalendarController {
         File ics = new File("events" + year + "_" + month + ".ics");
         Biweekly.write(calendar).go(ics);
 
-        Path path = Paths.get("conference.ics");
+        Path path = Paths.get("events" + year + "_" + month + ".ics");
         Resource resource = null;
         try {
             resource = new UrlResource(path.toUri());
