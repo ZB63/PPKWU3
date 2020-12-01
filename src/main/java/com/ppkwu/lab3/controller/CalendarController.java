@@ -3,6 +3,8 @@ package com.ppkwu.lab3.controller;
 import biweekly.Biweekly;
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +30,11 @@ public class CalendarController {
     public ResponseEntity buildCalendar(@PathVariable String year, @PathVariable String month) throws IOException, ParseException {
         ICalendar calendar = new ICalendar();
         calendar.setExperimentalProperty("X-WR-CALNAME", "Spring Releases");
+
+        // Download data from university website
+        Document doc = Jsoup
+                .connect("http://www.weeia.p.lodz.pl/pliki_strony_kontroler/kalendarz.php?rok=" + year + "&miesiac=" + month)
+                .get();
 
         // event
         VEvent event = new VEvent();
